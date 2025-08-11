@@ -25,7 +25,8 @@ echo 4. Desfragmentar Unidade C
 echo 5. Informacao de Sistema
 echo 6. Informacao Serie Bios
 echo 7. Informacao de Bateria Notebook
-echo 8. Sair
+echo 8. Limpar spool de impressao
+echo 9. Sair
 
 set /p escolha=Escolha uma opcao: 
 if "%escolha%"=="1" goto opcao1
@@ -35,7 +36,8 @@ if "%escolha%"=="4" goto opcao4
 if "%escolha%"=="5" goto opcao5
 if "%escolha%"=="6" goto opcao6
 if "%escolha%"=="7" goto opcao7
-if "%escolha%"=="8" goto sair
+if "%escolha%"=="8" goto opcao8
+if "%escolha%"=="9" goto sair
 
 goto menu
 
@@ -56,11 +58,11 @@ goto menu
 
 :opcao3
 echo Voce escolheu a opcao 3!
-rem Faz limpeza dos arquivos tempor·rios do Windows
+rem Faz limpeza dos arquivos tempor√°rios do Windows
 del c:\Windows\Temp\* /s /q
-rem Faz limpeza dos arquivos tempor·rios da pasta TEMP na raÌz
+rem Faz limpeza dos arquivos tempor√°rios da pasta TEMP na ra√≠z
 del /q/f/s %temp%\*
-rem Faz limpeza dos arquivos temporarios dos usu·rios no appdata
+rem Faz limpeza dos arquivos temporarios dos usu√°rios no appdata
 /d %%F in (C:\Users\*) do del %%F\AppData\Local\Temp\* /s /q
 
 pause
@@ -70,14 +72,14 @@ goto menu
 echo Voce escolheu a opcao 4!
 rem defrag C: /U /V
 defrag C: -f /v
-rem se for fazer o script em execuÁ„o em lote colocar shutdow -s no final para que ao concluir a desfragmentaÁ„o o comando shutdow execute sem precisar precionar a tecla
+rem se for fazer o script em execu√ß√£o em lote colocar shutdow -s no final para que ao concluir a desfragmenta√ß√£o o comando shutdow execute sem precisar precionar a tecla
 
 pause
 goto menu
 
 :opcao5
 echo Voce escolheu a opcao 5!
-rem Verifica informaÁıes completas do Sistema
+rem Verifica informa√ß√µes completas do Sistema
 systeminfo
 
 pause
@@ -85,7 +87,7 @@ goto menu
 
 :opcao6
 echo Voce escolheu a opcao 6!
-rem Verifica n˙mero de sÈrie da BIOS
+rem Verifica n√∫mero de s√©rie da BIOS
 wmic bios get serialnumber
 
 pause
@@ -94,11 +96,28 @@ goto menu
 
 :opcao7
 echo Voce escolheu a opcao 7!
-rem InformaÁ„o da bateria gerando arqwuivo .html
+rem Informa√ß√£o da bateria gerando arqwuivo .html
 powercfg /batteryreporte
 pause
 goto menu
 
 :opcao8
+echo Voce escolheu a opcao 8!
+rem Limpar spool de impress√£o
+echo Limpando a fila de Impressao.
+rem Parando o servi√ßo
+net stop spooler
+pause
+echo.
+rem del /Q /F /S ‚Äú%systemroot%\System32\Spool\Printers\*.*
+del %systemroot%\System32\spool\printers\* /Q
+echo Reiniciando o Spool de Impress√£o.
+pause
+echo.
+net start spooler
+echo
+echo Feito.
+
+:opcao9
 :sair
 exit
